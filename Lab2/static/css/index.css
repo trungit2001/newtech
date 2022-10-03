@@ -1,0 +1,33 @@
+html {
+    color: black;
+    display: table;
+    font-family: sans-serif;
+    height: 100%;
+    text-align: center;
+    width: 100%;
+}
+
+.title {
+    text-align: center;
+}
+
+.btn {
+    background-color: #4CAF50;
+    border-radius: 10px;
+    border-color: #4CAF50;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 700;
+    margin: 20px;
+}
+
+img.center {
+    width: 280px;
+    height: 280px;
+    display: block;
+    margin: 0 auto;
+}

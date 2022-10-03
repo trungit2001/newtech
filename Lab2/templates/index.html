@@ -6,12 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome</title>
-    <script type="text/javascript" , src="{{ url_for('static', filename='index.js') }}"></script>
+    <script type="text/javascript" , src="{{ url_for('static', filename='js/utils.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 </head>
 
 <body>
-    <h1>Click me!</h1>
-    <input type="button" onclick="sayHello()" value="Say Hello" />
+    <h1 class="title">Welcome to Fashion MNIST web demo</h1>
+    <button class="btn" onclick="changePage('./upload')">Get started</button>
 </body>
 
 </html>
