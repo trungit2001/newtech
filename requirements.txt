@@ -2,3 +2,6 @@ Flask
 tensorflow
 numpy
 pillow
+SQLAlchemy
+psycopg2
+tabulate
