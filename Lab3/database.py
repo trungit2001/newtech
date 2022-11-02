@@ -1,12 +1,11 @@
 import os
-import pandas as pd
-
-from datetime import datetime
 
 from sqlalchemy import create_engine
 from sqlalchemy import Table, Column, String, MetaData, ForeignKey, Float, DateTime
+from sqlalchemy.sql import text
 
-from settings import DEFAULT_DB_URI, TECH_TAXI_DB_URI
+from settings import DEFAULT_DB_URI, TECH_TAXI_DB_URI, DB_NAME
+from utils import load_data
 
 
 def init_conn(
@@ -71,17 +70,6 @@ def create_db_tech_taxi(engine, metadata: MetaData) -> dict:
     return tables
 
 
-def load_data(path):
-    date_parser = lambda x: pd.to_datetime(x, format=r"%Y-%m-%d %H:%M:%S")
-    timestamp_cols = ["tgdat", "tgden", "tgdi", "tgbdau", "tgkthuc"]
-    
-    data = pd.read_csv(path).to_dict("records")
-    for datum in data:
-        for k, v in datum.items():
-            if k in timestamp_cols:
-                datum[k] = date_parser(v)
-    return data
-
 def insert_data_to_db(db_url, tables: dict[Table]):
     engine, _ = init_conn(db_url, echo=False)
     conn = engine.connect()
@@ -92,13 +80,34 @@ def insert_data_to_db(db_url, tables: dict[Table]):
         conn.execute(tables[tb_name].insert(), data)
 
 
+def sql_query(db_url, query: str):
+    try:
+        engine, _ = init_conn(db_url, echo=False)
+        conn = engine.connect()
+        query = text(query)
+
+        print("[INFO] Starting query on db")
+        results = conn.execute(query).fetchall()
+        
+        return results
+    except Exception as e:
+        print("[ERROR] Detail:", e)
+    finally:
+        print("[INFO] Close connection")
+        conn.close()
+
+    return None
+    
+
 def run_pipeline():
     try:
         print("[INFO] Check exist db")
-        if os.path.exists("tech_taxi.db"):
+        if os.path.exists(DB_NAME):
             print("[WARNING] Delete exist db!")
-            os.remove("tech_taxi.db")
-            print("[INFO] Deleted db!")
+            check = input("Confirm delete? (y/N): ")
+            if check in ["y", "Y"]:
+                os.remove(DB_NAME)
+                print("[INFO] Deleted db!")
             
         print("[INFO] Initialize the tech taxi db")
         engine, metadata = init_conn(TECH_TAXI_DB_URI, echo=False)
@@ -109,9 +118,9 @@ def run_pipeline():
         insert_data_to_db(TECH_TAXI_DB_URI, tables)
         print("[INFO] Finished inserting data into db")
 
-        return engine, metadata
-
     except Exception as e:
         print("[ERROR] Detail:", e)
 
-        return None, None
+
+if __name__ == "__main__":
+    run_pipeline()
