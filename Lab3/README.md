@@ -1,12 +1,11 @@
 # Run project?
 ## 0. Cài đặt môi trường:
-⚠️ Thực hiện ở thư mục gốc của git này `(./root)`
+Thực hiện chạy các lệnh dưới đây để tạo, kích hoạt môi trường và cài đặt các packages cần thiết trước khi tạo database và query
 ```python
 python -m venv env
 env\Scripts\activate
 python -m pip install -r requirements.txt
 ```
-⚠️ Chuyển thư mục làm việc vào thư mục chứa project này trước khi chạy các lệnh tiếp theo (dùng lệnh `cd`)
 ***
 ## 1. Tạo database trước bằng lệnh sau:
 Khởi tạo database và insert một số dữ liệu có sẵn trong thư mục `data`. Thực hiện bằng cách chạy lệnh dưới đây
